@@ -1,0 +1,18 @@
+mongodb://admin:computer@dharma.mongohq.com:10016/store
+mongo dharma.mongohq.com:10016/store -u <user> -p<password>
+
+
+Categories
+-> Development Boards
+	Arduino
+	ARM
+	AVR
+	8051
+	
+-> Sensors
+	g
+-> Batteries
+-> Quad/Heli
+-> Robotics
+-> GPS/G
+jahNv    2a    july                                                                                                                                                     

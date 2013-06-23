@@ -1,0 +1,99 @@
+
+var Product = function(id, name, price) {
+  this.id    = ko.observable(id);
+  this.name  = ko.observable(name);
+  this.price = ko.observable(price);
+};
+ 
+// CLASS CartItem 
+var CartItem = function(product, quantity) {
+  var self      = this; // Scope Trick
+ 
+  self.product  = ko.observable(product);
+  self.quantity = ko.observable(quantity || 1);
+ 
+  self.cost     = ko.computed(function(){
+    return self.product().price() * self.quantity();
+  });
+};
+ 
+// CLASS ViewModel 
+var ViewModel = function() {
+  var self = this; // Scope Trick
+ 
+  /**
+   * Observables
+   */
+  self.sales_tax      = ko.observable(0.07);
+  self.shipping_cost  = ko.observable(10.00);
+ 
+  /**
+   * Observable Arrays
+   */
+  self.cart           = ko.observableArray();
+  self.products       = ko.observableArray();
+ 
+  /**
+   * Computed Observables
+   */
+  self.subtotal = ko.computed(function(){
+    var subtotal = 0;
+    $(self.cart()).each(function(index, cart_item){
+      subtotal += cart_item.cost();
+    });
+    return subtotal;
+  });
+ 
+  self.tax = ko.computed(function(){
+    return self.subtotal() * self.sales_tax();
+  });
+ 
+  self.total = ko.computed(function(){
+    return self.shipping_cost() + self.subtotal() + self.tax();
+  });
+ 
+  self.fetchAll=function(){
+	$.getJSON("/store",function(data){
+		this.products(data);
+	});
+  };
+  self.addToCart = function(product, event) {    
+	$(event.target).closest("div.thumbnail").css("border-color","green");
+    var cart_item = new CartItem(product, 1);
+	/*	
+	$.pnotify({
+		title: 'Cart Updated',
+		text: cart_item.product().name()+" is added to Cart",
+		mouse_reset: false
+	});	
+	*/    
+    self.cart.push(cart_item);
+  };
+  
+  self.moreView = function(product, event) {    
+	$(event.target).closest("div.thumbnail");
+	$(".toggler").toggle(500);
+	//$("#detailView").modal();
+  }; 
+  
+  self.removeFromCart = function(cart_item, event) {
+    // Remove the `cart_item` (which is a `CartItem` instance) from self.cart
+    self.cart.remove(cart_item);
+  };
+};
+  
+// Instantiate the ViewModel
+window.view_model = null;
+$(document).ready(function(){ 	
+	window.view_model= new ViewModel();	
+	window.view_model.products([]);		
+	ko.applyBindings(window.view_model);	
+	$('.nav-header').click(function () {		
+		$(this).nextUntil("li.nav-header").toggle(300);
+	});
+	$('.nav-header:not(:eq(0))').click();
+	$('.nav-header').css("cursor","pointer");
+});
+function toggleView(){
+	$('.toggler').toggle(500);
+}
