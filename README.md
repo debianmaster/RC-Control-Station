@@ -24,8 +24,14 @@ Libraries used:
 <li> npm install socket.io </li>
 </ol>
 
-Demo snapshot:
+Hardware used:
+RX:-  WL Toys v929 mini beetle quad, which works on A7105 2.4ghz system
+TX:-  A7105 2.4G-Wireless Module  brought from <a href="http://www.electrodragon.com/?product=2-4g-wireless-module-a7105">here</a> 
 
+Connections:
+<img src="https://raw.github.com/debianmaster/RC-Control-Station/master/static/img/500px-A7105_pin_definition.png"></img>
+
+Demo snapshot:
 <img src="https://raw.github.com/debianmaster/RC-Control-Station/master/static/img/rc+control_center.png"/>
 
 
